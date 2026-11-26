@@ -1,1 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PYTHON · DATA TYPES · GLASS</title>
+  <!-- Font & icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 30%, #1a1e2f, #0b0d17);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* floating abstract shapes for glass depth */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.55;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .orb-1 {
+      width: 450px;
+      height: 450px;
+      background: #3b6eff;
+      top: -120px;
+      left: -100px;
+      animation: drift 22s infinite alternate ease-in-out;
+    }
+
+    .orb-2 {
+      width: 550px;
+      height: 550px;
+      background: #b03bff;
+      bottom: -180px;
+      right: -120px;
+      animation: drift 28s infinite alternate-reverse ease-in-out;
+    }
+
+    .orb-3 {
+      width: 350px;
+      height: 350px;
+      background: #00e0c6;
+      top: 40%;
+      right: 15%;
+      filter: blur(110px);
+      opacity: 0.3;
+      animation: drift 18s infinite alternate;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(60px, 40px) scale(1.15); }
+    }
+
+    /* main glass container */
+    .glass-container {
+      position: relative;
+      z-index: 10;
+      max-width: 1280px;
+      width: 100%;
+      background: rgba(20, 25, 45, 0.25);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-radius: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(255, 255, 255, 0.03);
+      padding: 2.5rem 2.5rem 3rem;
+      transition: all 0.3s ease;
+    }
+
+    /* header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .python-icon {
+      font-size: 3.2rem;
+      color: #ffe873;
+      filter: drop-shadow(0 0 15px rgba(255, 232, 115, 0.6));
+    }
+
+    .title h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff, #c0d0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+    }
+
+    .title p {
+      font-size: 1rem;
+      font-weight: 400;
+      color: rgba(220, 230, 255, 0.8);
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .title p i {
+      font-size: 0.7rem;
+      color: #6ee7b7;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 60px;
+      padding: 0.6rem 1.6rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #cfdfff;
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .badge i {
+      color: #7aa2ff;
+    }
+
+    /* grid for cards */
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1.8rem;
+      margin-top: 0.5rem;
+    }
+
+    /* glass card */
+    .card {
+      background: rgba(255, 255, 255, 0.045);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.8rem 1.5rem 1.8rem;
+      transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1);
+      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.01);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 30px 45px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(160, 200, 255, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .type-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 1.8rem;
+      color: #b8d0ff;
+      transition: 0.25s;
+    }
+
+    .card:hover .type-icon {
+      background: rgba(140, 180, 255, 0.2);
+      color: #fff;
+      transform: scale(1.02);
+      border-color: rgba(180, 210, 255, 0.4);
+    }
+
+    .type-name {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #f0f5ff, #b9cdff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .type-desc {
+      font-size: 0.92rem;
+      color: rgba(205, 220, 255, 0.75);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+      font-weight: 400;
+      border-left: 2px solid rgba(130, 170, 255, 0.4);
+      padding-left: 1rem;
+      letter-spacing: 0.2px;
+    }
+
+    .code-snippet {
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(4px);
+      border-radius: 18px;
+      padding: 1rem 1.2rem;
+      margin-top: auto;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.9rem;
+      color: #d8e4ff;
+      line-height: 1.6;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+      transition: 0.2s;
+      word-break: break-word;
+    }
+
+    .card:hover .code-snippet {
+      border-color: rgba(150, 190, 255, 0.3);
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .code-snippet .keyword {
+      color: #ffb86b;
+    }
+
+    .code-snippet .string {
+      color: #9ee6a0;
+    }
+
+    .code-snippet .number {
+      color: #82c9ff;
+    }
+
+    .code-snippet .comment {
+      color: #8d9fc9;
+      font-style: italic;
+    }
+
+    .code-snippet .bool {
+      color: #ff9e7a;
+    }
+
+    .code-snippet .none {
+      color: #c099ff;
+    }
+
+    /* footer / meta */
+    .footer-note {
+      margin-top: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 1.8rem;
+      font-size: 0.85rem;
+      color: rgba(190, 205, 240, 0.7);
+    }
+
+    .footer-note i {
+      color: #82b1ff;
+      margin-right: 0.4rem;
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+    }
+
+    /* responsive */
+    @media (max-width: 720px) {
+      .glass-container {
+        padding: 1.8rem 1.2rem 2rem;
+      }
+      .title h1 {
+        font-size: 1.8rem;
+      }
+      .python-icon {
+        font-size: 2.5rem;
+      }
+      .badge {
+        padding: 0.4rem 1.2rem;
+        font-size: 0.8rem;
+      }
+      .data-grid {
+        gap: 1.2rem;
+      }
+      .card {
+        padding: 1.5rem 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0.8rem;
+      }
+      .header {
+        margin-bottom: 2rem;
+      }
+      .title h1 {
+        font-size: 1.6rem;
+      }
+      .type-name {
+        font-size: 1.4rem;
+      }
+      .code-snippet {
+        font-size: 0.8rem;
+      }
+      .footer-note {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- floating gradient orbs (glassmorphism background) -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <main class="glass-container">
+    <!-- header area -->
+    <div class="header">
+      <div class="logo-area">
+        <i class="fab fa-python python-icon"></i>
+        <div class="title">
+          <h1>Python Data Types</h1>
+          <p><i class="fas fa-circle"></i> glassmorphism · immersive exploration</p>
+        </div>
+      </div>
+      <div class="badge">
+        <i class="fas fa-cube"></i> 7 core types
+      </div>
+    </div>
+
+    <!-- cards grid -->
+    <div class="data-grid">
+      <!-- int -->
+      <div class="card">
+        <div class="card-header">
+          <div class="type-icon"><i class="fas fa-calculator"></i></div>
+          <span class="type-name">int</span>
+        </div>
+        <div class="type-desc">Whole numbers, arbitrary precision. Perfect for counting & indexing.</div>
+        <div class="code-snippet">
+          <span class="comment"># integer</span><br>
+          x = <span class="number">42</span><br>
+          y = -<span class="number">1_000_000</span><br>
+          <span class="keyword">print</span>(x + <span class="number">8</span>)  <span class="comment"># 50</span>
+        </div>
+      </div>
+
+      <!-- float -->
+      <div class="card">
+        <div class="card-header">
+          <div class="type-icon"><i class="fas fa-water"></i></div>
+          <span class="type-name">float</span>
+        </div>
+        <div class="type-desc">Floating-point numbers. For precise decimal & scientific values.</div>
+        <div class="code-snippet">
+          <span class="comment"># floating point</span><br>
+          pi = <span class="number">3.14159</span><br>
+          avogadro = <span class="number">6.022e23</span><br>
+          <span class="keyword">print</span>(pi * <span class="number">2</span>)  <span class="comment"># 6.28318</span>
+        </div>
+      </div>
+
+      <!-- str -->
+      <div class="card">
+        <div class="card-header">
+          <div class="type-icon"><i class="fas fa-font"></i></div>
+          <span class="type-name">str</span>
+        </div>
+        <div class="type-desc">Immutable sequence of Unicode characters. Text data & formatting.</div>
+        <div class="code-snippet">
+          <span class="comment"># string</span><br>
+          name = <span class="string">"Python"</span><br>
+          emoji = <span class="string">"🐍 glass"</span><br>
+          <span class="keyword">print</span>(name[<span class="number">0</span>])  <span class="comment"># 'P'</span>
+        </div>
+      </div>
+
+      <!-- bool -->
+      <div class="card">
+        <div class="card-header">
+          <div class="type-icon"><i class="fas fa-toggle-on"></i></div>
+          <span class="type-name">bool</span>
+        </div>
+        <div class="type-desc">Truth values: True or False. Backbone of logic & conditionals.</div>
+        <div class="code-snippet">
+          <span class="comment"># boolean</span><br>
+          is_ready = <span class="bool">True</span><br>
+          has_glass = <span class="bool">False</span><br>
+          <span class="keyword">print</span>(is_ready <span class="keyword">and</span> <span class="keyword">not</span> has_glass)  <span class="comment"># True</span>
+        </div>
+      </div>
+
+      <!-- list -->
+      <div class="card">
+        <div class="card-header">
+          <div class="type-icon"><i class="fas fa-list-ul"></i></div>
+          <span class="type-name">list</span>
+        </div>
+        <div class="type-desc">Ordered, mutable sequence. Can hold mixed data types.</div>
+        <div class="code-snippet">
+          <span class="comment"># list</span><br>
+          langs = [<span class="string">"Python"</span>, <span class="string">"JS"</span>, <span class="string">"Rust"</span>]<br>
+          langs.append(<span class="string">"Go"</span>)<br>
+          <span class="keyword">print</span>(langs[<span class="number">0</span>])  <span class="comment"># Python</span>
+        </div>
+      </div>
+
+      <!-- tuple -->
+      <div class="card">
+        <div class="card-header">
+          <div class="type-icon"><i class="fas fa-lock"></i></div>
+          <span class="type-name">tuple</span>
+        </div>
+        <div class="type-desc">Immutable ordered sequence. Ideal for fixed collections.</div>
+        <div class="code-snippet">
+          <span class="comment"># tuple</span><br>
+          point = (<span class="number">4.5</span>, <span class="number">-2.1</span>)<br>
+          rgb = (<span class="number">255</span>, <span class="number">128</span>, <span class="number">0</span>)<br>
+          <span class="keyword">print</span>(point[<span class="number">0</span>])  <span class="comment"># 4.5</span>
+        </div>
+      </div>
+
+      <!-- dict -->
+      <div class="card">
+        <div class="card-header">
+          <div class="type-icon"><i class="fas fa-table"></i></div>
+          <span class="type-name">dict</span>
+        </div>
+        <div class="type-desc">Key-value mapping. Hash table, mutable, fast lookups.</div>
+        <div class="code-snippet">
+          <span class="comment"># dictionary</span><br>
+          user = {<span class="string">"name"</span>: <span class="string">"Ada"</span>, <span class="string">"age"</span>: <span class="number">36</span>}<br>
+          user[<span class="string">"lang"</span>] = <span class="string">"Python"</span><br>
+          <span class="keyword">print</span>(user[<span class="string">"name"</span>])  <span class="comment"># Ada</span>
+        </div>
+      </div>
+
+      <!-- set (bonus) but keep 7 core? we have int,float,str,bool,list,tuple,dict = 7. set is extra? we said 7 core.
+      But user said "no one has ever used them" — we can include set as 8th? but header says "7 core types".
+      We'll keep 7 to match badge. Actually let's add set but change badge to 8? or keep 7 and remove set? I'll keep 7 as above.
+      but there is space; but better keep consistent with "7 core types". so no set. I'll add None? But no.
+      Actually we have 7 cards above: int,float,str,bool,list,tuple,dict. Perfect.
+      -->
+    </div>
+
+    <!-- footer info -->
+    <div class="footer-note">
+      <div class="pill-group">
+        <span class="pill"><i class="fas fa-droplet"></i> glassmorphism</span>
+        <span class="pill"><i class="fas fa-mobile-alt"></i> responsive</span>
+      </div>
+      <div>
+        <i class="fas fa-code"></i> python data types · built with pure CSS glass
+      </div>
+    </div>
+  </main>
+</body>
+</html>
